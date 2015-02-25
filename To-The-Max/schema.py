@@ -1,0 +1,33 @@
+__author__ = 'max'
+import hashlib
+import os
+from app import db
+
+class Message(db.Model):
+    __tablename__ = 'messages'
+    index = db.Column(db.Integer, primary_key=True)
+    msg = db.Column(db.String(140))
+    name = db.Column(db.String(140))
+
+    def __init__(self, name, msg):
+        self.name = name
+        self.msg = msg
+
+
+class User(db.Model):
+    __tablename__ = 'users'
+    name = db.Column(db.String(100), primary_key=True)
+    password = db.Column(db.Binary(32))
+    salt = db.Column(db.Binary(32))
+
+    def __init__(self, name, password):
+        self.name = name
+        self.salt = os.urandom(32)
+        self.password = hashlib.pbkdf2_hmac('sha256', password.encode(), self.salt, 100000)
+
+    def check_pass(self, password):
+        return self.password == hashlib.pbkdf2_hmac('sha256', password.encode(), self.salt, 100000)
+
+
+# Create and update all tables and relations - Also commits the all the db stuff!
+db.create_all()
