@@ -28,7 +28,7 @@
                 row += '<td> <img id="img_play" src=\"' + play_src + '\" onclick="playSong(\'' + path + '\')"/> </td>';
                 row += '<td> <img id="img_pause" src=\"' + pause_src + '\" onclick="pauseSong(\'' + path + '\')"/> </td>';
                 row += '<td> <img id="img_stop" src=\"' + stop_src + '\" onclick="stopSong()"/> </td>';
-                row += '<td> <img id="img_queue" src=\"' + queue_src + '\" onclick="setTimeout(queueSong(\'' + path + '\'), 1000 * 15)"/> </td>';
+                row += '<td> <img id="img_queue" src=\"' + queue_src + '\" onclick="queueSong(\'' + path + '\')"/> </td>';
                 row += '</tr>';
 
                 $("#songs > tbody:last").append(row);
@@ -42,6 +42,7 @@
                 playSong(queue[0]);
                 queue.remove[0];
             }
+            setTimeout(queueSong(song), 1000 * 10);
         }
 
 
@@ -73,27 +74,30 @@
         });
     </script>
 </head>
-<body>
-
-<div class="row" style="margin-top: 50px">
-   <div class="container col-md-1"></div>
-   <div class="container col-md-10">
-    <table class="table" id="songs">
-     <thead>
-      <tr>
-          <th width=60%>Song</th>
-          <th>Play</th>
-          <th>Pause</th>
-          <th>Stop</th>
-          <th>Queue</th>
-      </tr>
-     </thead>
-     <tbody>
-     </tbody>
-    </table>
-   </div>
-  </div>
-
+<body background="/static/css/COLOURlovers.com-Navaho.png">
+<div class="container">
+    <div class="jumbotron">
+        <div class="row" style="margin-top: 50px">
+         <div class="container col-md-1"></div>
+         <div class="container col-md-10">
+             <h1> Music to the MAX! </h1>
+                <table class="table" id="songs">
+                  <thead>
+                        <tr>
+                            <th width=60%>Song</th>
+                            <th>Play</th>
+                            <th>Pause</th>
+                            <th>Stop</th>
+                            <th>Queue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 
