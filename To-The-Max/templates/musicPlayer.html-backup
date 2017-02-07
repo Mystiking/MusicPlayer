@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+  <script src="/static/js/jquery.min.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
+    <title>To-The-Max Music Player!</title>
+
+    <script>
+        var music_list = null;
+        var music_player = new Audio();
+        var play_src = '/static/icons/play_1.png';
+        var pause_src = '/static/icons/pause_1.png';
+        var queue_src = '/static/icons/queue_0.png';
+        var stop_src = '/static/icons/stop_0.png';
+        var play = false;
+        var queue = [];
+        var index = 0;
+        var current = null;
+        var next = "";
+        var len = 0;
+
+        function createList(){
+            $("#songs tbody > tr").remove();
+            for(var i in music_list) {
+                path = '/' + music_list[i].path + '/' + music_list[i].name;
+                row = '';
+                row += '<tr>';
+                row += '<td>' + music_list[i].name.substring(0, music_list[i].name.length - 4) + '</td>';
+                row += '<td> <img id="img_play" src=\"' + play_src + '\" onclick="playSong(\'' + path + '\')"/> </td>';
+                row += '<td> <img id="img_pause" src=\"' + pause_src + '\" onclick="pauseSong(\'' + path + '\')"/> </td>';
+                row += '<td> <img id="img_stop" src=\"' + stop_src + '\" onclick="stopSong()"/> </td>';
+                row += '<td> <img id="img_next" src=\"' + queue_src + '\" onclick="nextSong()"/> </td>';
+                row += '</tr>';
+
+                $("#songs > tbody:last").append(row);
+            }
+        }
+
+        function getIndex(song){
+            for(var i in music_list){
+                path = '/' + music_list[i].path + '/' + music_list[i].name;
+                if (song == path) {
+                    return i;
+                }
+            }
+            return 0;
+        }
+
+        function nextSong(){
+            song = current;
+            index = (getIndex(song) + 1) % len;
+            next = '/' + music_list[index].path + '/' + music_list[index].name;
+            playSong(next);
+        }
+
+        function playSong(song){
+            if (!music_player.paused){
+                music_player.src = song;
+                music_player.load();
+                index = getIndex(song);
+            }
+            current = song;
+            music_player.play();
+        }
+
+        function stopSong(){
+            music_player.pause();
+            music_player.currentTime = 0;
+        }
+
+        function pauseSong(song){
+            music_player.pause();
+        }
+
+        function loadList(){
+            $.getJSON("/list", function(list){
+                music_list = list;
+                music_player.addEventListener('ended', function() {
+                    index++;
+                    nextsong = '/' + music_list[index].path + '/' + music_list[index].name;
+                    music_player.src = nextsong;
+                    music_player.load();
+                    music_player.play();
+                    if (index == (len - 1)) {
+                        index = 0;
+                    }
+                    }, false);
+                len = music_list.length;
+                createList();
+            });
+        }
+
+        $(document).ready(function(){
+            loadList();
+        });
+    </script>
+</head>
+<body background="/static/css/COLOURlovers.com-Navaho.png">
+<div class="container">
+    <div class="jumbotron">
+        <div class="row" style="margin-top: 50px">
+         <div class="container col-md-1"></div>
+         <div class="container col-md-10">
+             <h1> Music to the MAX! </h1>
+                <table class="table" id="songs">
+                  <thead>
+                        <tr>
+                            <th width=60%>Song</th>
+                            <th>Play</th>
+                            <th>Pause</th>
+                            <th>Stop</th>
+                            <th>Queue</th>
+                            <th>Play Queue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<!-- The icon for the play button was created by Freepik from flaticon.com-->
+<!-- The icon for the play_1 button was created by Yannick from flaticon.com-->
+<!-- The icon for the play_2 button was created by Icon Works from flaticon.com-->

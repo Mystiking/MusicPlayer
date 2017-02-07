@@ -2,102 +2,35 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-  <script src="/static/js/jquery.min.js"></script>
-  <script src="/static/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/custom.css">
     <title>To-The-Max Music Player!</title>
-
-    <script>
-        var music_list = null;
-        var music_player = new Audio();
-        var play_src = '/static/icons/play_1.png';
-        var pause_src = '/static/icons/pause_1.png';
-        var queue_src = '/static/icons/queue_0.png';
-        var stop_src = '/static/icons/stop_0.png';
-        var play = false;
-        var queue = [];
-
-        function createList(){
-            $("#songs tbody > tr").remove();
-            for(var i in music_list) {
-                path = '/' + music_list[i].path + '/' + music_list[i].name;
-                row = '';
-                row += '<tr>';
-                row += '<td>' + music_list[i].name.substring(0, music_list[i].name.length - 4) + '</td>';
-                row += '<td> <img id="img_play" src=\"' + play_src + '\" onclick="playSong(\'' + path + '\')"/> </td>';
-                row += '<td> <img id="img_pause" src=\"' + pause_src + '\" onclick="pauseSong(\'' + path + '\')"/> </td>';
-                row += '<td> <img id="img_stop" src=\"' + stop_src + '\" onclick="stopSong()"/> </td>';
-                row += '<td> <img id="img_queue" src=\"' + queue_src + '\" onclick="queueSong(\'' + path + '\')"/> </td>';
-                row += '</tr>';
-
-                $("#songs > tbody:last").append(row);
-            }
-        }
-
-
-        function queueSong(song){
-            queue.append(song);
-            if (music_player.ended) {
-                playSong(queue[0]);
-                queue.remove[0];
-            }
-            setTimeout(queueSong(song), 1000 * 10);
-        }
-
-
-        function playSong(song){
-            if (!music_player.paused){
-                music_player.src = song;
-            }
-            music_player.play();
-        }
-
-        function stopSong(){
-            music_player.pause();
-            music_player.currentTime = 0;
-        }
-
-        function pauseSong(song){
-            music_player.pause();
-        }
-
-        function loadList(){
-            $.getJSON("/list", function(list){
-                music_list = list;
-                createList();
-            });
-        }
-
-        $(document).ready(function(){
-            loadList();
-        });
-    </script>
+    <script src="../static/js/jquery-3.1.1.js"></script>
+    <script src="../static/js/music.js"></script>
 </head>
 <body background="/static/css/COLOURlovers.com-Navaho.png">
-<div class="container">
-    <div class="jumbotron">
-        <div class="row" style="margin-top: 50px">
-         <div class="container col-md-1"></div>
-         <div class="container col-md-10">
-             <h1> Music to the MAX! </h1>
-                <table class="table" id="songs">
-                  <thead>
-                        <tr>
-                            <th width=60%>Song</th>
-                            <th>Play</th>
-                            <th>Pause</th>
-                            <th>Stop</th>
-                            <th>Queue</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div>
+    <aside id="a1">
+        <h2> Queue </h2>
+    </aside>
+
+        <h1 align="center"> Music to the MAX! </h1>
+        <h2 align="center" id="currently_playing"> </h2>
+        <table class="table" id="songs">
+            <thead>
+                <tr>
+                    <th width=60%>Song</th>
+                    <th>Play</th>
+                    <th>Pause</th>
+                    <th>Stop</th>
+                    <th>Queue</th>
+                    <th>Play next</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
-</div>
 </body>
 </html>
 

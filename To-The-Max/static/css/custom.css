@@ -1,0 +1,24 @@
+* {
+    margin: auto;   
+}
+
+section {
+    display: block;
+}
+
+table {
+    display: block;
+    width: 50%;
+}
+
+div {
+    padding: 10px;
+    background-color: #faebd7;
+    width: 90%;
+    margin-top: 2%;
+}
+
+aside {
+    float: right;
+    width: 25%;
+}
